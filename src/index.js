@@ -44,25 +44,23 @@ function handleKey(event) {
 }
 
 function renderInfo(info) {
-  const { lat, lon, country, region, city, timezone } = info;
-  ip.textContent = info.query;
+  const { country, region, city, timezone, lat, lng } = info.location;
+  ip.textContent = info.ip;
   if ((country, region)) {
     location.textContent = `${country}, ${region}${city ? ", " + city : ""}`;
   } else {
     location.textContent = "Not found";
   }
-  timeZone.textContent = timezone
-    ? timezone.replaceAll("_", " ").split("/").join(",  ")
-    : "";
+  timeZone.textContent = timezone;
   isp.textContent = info.isp;
-  if (lat && lon) {
-    map.setView([lat, lon]);
+  if (lat && lng) {
+    map.setView([lat, lng]);
     const marker = document.querySelector(".leaflet-marker-icon");
     if (!marker) {
-      L.marker([lat, lon], { icon: locationIcon }).addTo(map);
+      L.marker([lat, lng], { icon: locationIcon }).addTo(map);
     } else {
       marker.remove();
-      L.marker([lat, lon], { icon: locationIcon }).addTo(map);
+      L.marker([lat, lng], { icon: locationIcon }).addTo(map);
     }
     if (matchMedia("(max-width: 1024px)").matches) {
       addOffset(map);
